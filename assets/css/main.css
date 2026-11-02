@@ -174,10 +174,9 @@ button { font: inherit; }
 .promo-phone { position: absolute; right: 0; display: flex; align-items: center; gap: 4px; color: #111; white-space: nowrap; }
 .promo-phone img { width: 16px; height: 16px; object-fit: contain; }
 .header-navbar { background: #fff; }
-.header-main { display: flex; width: min(100%, 1280px); min-height: 64px; padding-inline: 192px; flex-wrap: nowrap; align-items: center; justify-content: space-between; gap: 0; }
+.header-main { display: flex; width: min(calc(100% - 64px), 896px); min-height: 64px; padding-inline: 0; flex-wrap: nowrap; align-items: center; justify-content: space-between; gap: 0; }
 .header-main { position: relative; }
-.brand { display: flex; width: 177px; height: 64px; padding: 2px 35px 0; flex: none; align-items: center; justify-content: center; }
-.brand picture { display: block; }
+.brand { display: flex; width: 177px; height: 64px; padding: 0 35px; flex: none; align-items: center; justify-content: center; }
 .brand img { display: block; width: 107px; height: 64px; object-fit: contain; }
 .header-services a { display: flex; padding: 12px; align-items: center; gap: 14px; color: #111; font-size: 12px; white-space: nowrap; }
 .header-services a:nth-child(1) { width: 203px; }
@@ -188,7 +187,7 @@ button { font: inherit; }
 .header-actions { align-items: center; gap: 16px; }
 .header-actions a, .header-actions button { display: grid; width: 24px; height: 24px; padding: 0; border: 0; place-items: center; background: transparent; }
 .header-actions img { display: block; width: 24px; height: 24px; object-fit: contain; }
-.desktop-search-popover { position: absolute; top: 100%; right: 192px; width: 551px; height: 56px; padding: 8px; border: 1px solid #d6d6d6; background: #fff; box-shadow: 0 3px 8px rgb(0 0 0 / 18%); z-index: 1040; }
+.desktop-search-popover { position: absolute; top: 100%; right: 0; width: 551px; height: 56px; padding: 8px; border: 1px solid #d6d6d6; background: #fff; box-shadow: 0 3px 8px rgb(0 0 0 / 18%); z-index: 1040; }
 .desktop-search-popover[hidden] { display: none; }
 .desktop-search-popover__field { height: 40px; display: flex; align-items: center; padding: 0 12px; border: 1px solid var(--pink); border-radius: 7px; }
 .desktop-search-popover__field > img { width: 20px; height: 20px; flex: none; opacity: .55; }
@@ -236,19 +235,15 @@ button { font: inherit; }
 .benefit small { font-size: 12px; font-weight: 700; text-transform: uppercase; }
 
 @media (min-width: 992px) {
+  .category-nav .content-container { width: min(calc(100% - 64px), 896px); }
   .header-main .header-services { display: contents !important; }
   .header-main .navbar-collapse { display: none !important; }
-}
-
-@media (min-width: 992px) and (max-width: 1279.98px) {
-  .header-main { padding-inline: 32px; }
-  .desktop-search-popover { right: 32px; }
 }
 
 @media (max-width: 991.98px) {
   .promo-bar { min-height: 0; padding: 10px 0; font-size: 10px; text-align: center; }
   .promo-phone { display: none; }
-  .header-main { min-height: 64px; padding-inline: 12px; flex-wrap: wrap; gap: 8px; }
+  .header-main { min-height: 64px; padding-inline: 12px; width: 100%; flex-wrap: wrap; gap: 8px; }
   .brand { width: 95px; height: 64px; padding: 0; flex: 0 0 95px; }
   .brand img { width: 95px; height: 64px; object-fit: contain; }
   .header-main .navbar-collapse { width: 100%; }
@@ -429,6 +424,8 @@ button { font: inherit; }
 
 /* components/flash-sale/flash-sale.css */
 .flash-sale__mobile-campaign { display: none; }
+.flash-sale .product-card h3 { color: #898585; font-size: 12px; font-weight: 400; }
+.flash-sale .product-card p { font-size: 12px; font-weight: 700; }
 .flash-sale .product-picture img { object-fit: contain; }
 .flash-sale {
   padding: 32px 0 0;

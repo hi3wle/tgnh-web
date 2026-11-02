@@ -53,6 +53,7 @@
 - `assets/images/icons/chevron-right.svg`
 - `assets/images/icons/close.svg`
 - `assets/images/icons/hero-chevron.svg`
+- `assets/images/icons/header-logo.svg`
 - `assets/images/icons/home.svg`
 - `assets/images/icons/menu.svg`
 - `assets/images/icons/profile.svg`

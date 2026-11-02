@@ -254,36 +254,42 @@ window.TGNH_MOCK_DATA = {
         "image": "assets/images/desktop/7igr3gmj_expires_30_days.png",
         "mobile_image": "assets/images/mobile/vv0ybm55_expires_30_days.png",
         "alt": "Signoria",
-        "badge": "Chỉ còn 5 sp"
+        "badge": "Chỉ còn 5 sp",
+        "eyebrow": "Sale"
       },
       {
         "slug": "paco-rabanne",
         "image": "assets/images/desktop/o9k05qka_expires_30_days.png",
         "mobile_image": "assets/images/mobile/c35m131y_expires_30_days.png",
-        "alt": "Paco Rabanne"
+        "alt": "Paco Rabanne",
+        "eyebrow": "Sale"
       },
       {
         "slug": "moschino-toy-2",
         "image": "assets/images/desktop/q9lypfo0_expires_30_days.png",
         "mobile_image": "assets/images/mobile/mh8sonn3_expires_30_days.png",
         "alt": "Moschino",
-        "badge": "Chỉ còn 1 ngày"
+        "badge": "Chỉ còn 1 ngày",
+        "eyebrow": "Sale"
       },
       {
         "slug": "michael-kors-gorgeous",
         "image": "assets/images/desktop/j1pkks81_expires_30_days.png",
         "mobile_image": "assets/images/mobile/xnnp1fij_expires_30_days.png",
-        "alt": "Michael Kors Gorgeous"
+        "alt": "Michael Kors Gorgeous",
+        "eyebrow": "Sale"
       },
       {
         "slug": "ferragamo-uomo",
         "image": "assets/images/desktop/ferragamo-uomo-signature.png",
-        "alt": "Salvatore Ferragamo Uomo Signature"
+        "alt": "Salvatore Ferragamo Uomo Signature",
+        "eyebrow": "Sale"
       },
       {
         "slug": "miss-saigon-elegance",
         "image": "assets/images/desktop/wfymoxwt_expires_30_days.png",
-        "alt": "BST Miss Saigon Elegance 15ml"
+        "alt": "BST Miss Saigon Elegance 15ml",
+        "eyebrow": "Sale"
       }
     ],
     "favorites": [
