@@ -32,6 +32,8 @@
 - `assets/images/desktop/exclusive-bundle-7642.png`
 - `assets/images/desktop/exclusive-bundle-7642.webp`
 - `assets/images/desktop/exclusive-special-offers.jpg`
+- `assets/images/desktop/ferragamo-uomo-signature.png`
+- `assets/images/desktop/ferragamo-uomo-signature.webp`
 - `assets/images/desktop/fragrance-category-men.jpg`
 - `assets/images/desktop/fragrance-category-niche.jpg`
 - `assets/images/desktop/fragrance-category-unisex.jpg`
@@ -58,6 +60,12 @@
 - `assets/images/icons/voucher.svg`
 - `assets/images/mobile/brand-story-flowers.jpg`
 - `assets/images/mobile/campaign-20-10.jpg`
+- `assets/images/mobile/editorial-417.png`
+- `assets/images/mobile/editorial-417.webp`
+- `assets/images/mobile/editorial-birkholz.png`
+- `assets/images/mobile/editorial-birkholz.webp`
+- `assets/images/mobile/editorial-parour.png`
+- `assets/images/mobile/editorial-parour.webp`
 - `assets/images/mobile/hero-birkholz-romance-in-florence.jpg`
 - `assets/images/mobile/hero-birkholz-romance-in-florence.png`
 - `assets/images/mobile/hero-birkholz-romance-in-florence.webp`

@@ -277,7 +277,7 @@ window.TGNH_MOCK_DATA = {
       },
       {
         "slug": "ferragamo-uomo",
-        "image": "assets/images/desktop/sz17nqrr_expires_30_days.png",
+        "image": "assets/images/desktop/ferragamo-uomo-signature.png",
         "alt": "Salvatore Ferragamo Uomo Signature"
       },
       {
@@ -587,7 +587,7 @@ document.querySelectorAll('.product-card, .exclusive-card, .elegance-card').forE
   const filters = [
     { key: 'brand', label: 'Thương hiệu', items: brands },
     { key: 'gender', label: 'Giới tính', items: ['Nam', 'Nữ', 'Unisex'] },
-    { key: 'price', label: 'Giá KM', items: ['Dưới 1.000.000đ', '1.000.000đ – 2.000.000đ', '2.000.000đ – 3.000.000đ', 'Trên 3.000.000đ'] },
+    { key: 'price', label: 'Giá Khuyến mãi', items: ['Dưới 1.000.000đ', '1.000.000đ – 2.000.000đ', '2.000.000đ – 3.000.000đ', 'Trên 3.000.000đ'] },
     { key: 'sort', label: 'Sắp xếp', items: ['Mới nhất', 'Bán chạy nhất', 'Giá tăng dần', 'Giá giảm dần'] }
   ];
 
@@ -809,6 +809,54 @@ document.querySelectorAll('.product-card, .exclusive-card, .elegance-card').forE
     back.focus();
   }));
   window.addEventListener('resize', () => { if (window.innerWidth >= 992) close(); });
+})();
+
+
+// assets/js/login-modal.js
+(() => {
+  const modal = document.querySelector('#loginModal');
+  if (!modal || !window.bootstrap?.Modal) return;
+  const instance = bootstrap.Modal.getOrCreateInstance(modal);
+  const sidebar = document.querySelector('#mobile-sidebar');
+  const password = modal.querySelector('#loginPassword');
+  const passwordToggle = modal.querySelector('[data-login-password-toggle]');
+  const form = modal.querySelector('[data-login-form]');
+  let returnFocus;
+
+  document.querySelectorAll('[data-login-open]').forEach((trigger) => {
+    trigger.addEventListener('click', (event) => {
+      event.preventDefault();
+      if (modal.classList.contains('show')) return;
+      if (sidebar?.open && sidebar.contains(trigger)) {
+        returnFocus = document.querySelector('.mobile-menu-toggle');
+        sidebar.addEventListener('close', () => instance.show(), { once: true });
+        // The sidebar's existing link handler completes its close animation first.
+      } else {
+        returnFocus = trigger;
+        instance.show();
+      }
+    });
+  });
+
+  passwordToggle.addEventListener('click', () => {
+    const visible = password.type === 'password';
+    password.type = visible ? 'text' : 'password';
+    passwordToggle.setAttribute('aria-pressed', String(visible));
+    passwordToggle.setAttribute('aria-label', visible ? 'Ẩn mật khẩu' : 'Hiện mật khẩu');
+  });
+  modal.addEventListener('hidden.bs.modal', () => {
+    password.type = 'password';
+    passwordToggle.setAttribute('aria-pressed', 'false');
+    passwordToggle.setAttribute('aria-label', 'Hiện mật khẩu');
+    password.value = '';
+    returnFocus?.focus({ preventScroll: true });
+  });
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+    // Backend integration listens for this event; credentials are never persisted here.
+    form.dispatchEvent(new CustomEvent('tgnh:login-submit', { bubbles: true, detail: new FormData(form) }));
+  });
 })();
 
 
