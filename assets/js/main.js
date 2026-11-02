@@ -540,21 +540,29 @@ document.querySelectorAll('[data-product-carousel]').forEach((carousel) => {
   updateControls();
 });
 
-document.querySelectorAll('.product-card').forEach((card) => {
-  const media = card.querySelector(':scope > img, :scope > .product-picture');
-  const productLink = card.querySelector('.product-link');
+document.querySelectorAll('.product-card, .exclusive-card, .elegance-card').forEach((card) => {
+  if (card.querySelector('.product-quicklook')) return;
+  const imageLink = card.querySelector(':scope > .exclusive-card__image, :scope > .elegance-card__image');
+  const media = imageLink || card.querySelector(':scope > img, :scope > .product-picture');
+  const productLink = imageLink || card.querySelector('.product-link');
   if (!media || !productLink) return;
 
-  const mediaFrame = document.createElement('div');
-  mediaFrame.className = 'product-media';
-  media.replaceWith(mediaFrame);
-  mediaFrame.append(media);
+  const mediaFrame = imageLink || document.createElement('div');
+  mediaFrame.classList.add('product-media');
+  if (!imageLink) {
+    media.replaceWith(mediaFrame);
+    mediaFrame.append(media);
+  }
 
-  const quicklook = document.createElement('a');
+  // The image is already a link on legacy offer/bundle cards; avoid nested anchors.
+  const quicklook = document.createElement(imageLink ? 'span' : 'a');
   quicklook.className = 'product-quicklook';
-  quicklook.href = productLink.getAttribute('href');
   quicklook.textContent = 'Xem chi tiết';
-  quicklook.setAttribute('aria-label', `Xem chi tiết ${card.querySelector('p')?.textContent.trim() || 'sản phẩm'}`);
+  if (imageLink) quicklook.setAttribute('aria-hidden', 'true');
+  else {
+    quicklook.href = productLink.getAttribute('href');
+    quicklook.setAttribute('aria-label', `Xem chi tiết ${card.querySelector('p')?.textContent.trim() || 'sản phẩm'}`);
+  }
   mediaFrame.append(quicklook);
 });
 
@@ -1075,6 +1083,31 @@ document.querySelectorAll('[data-brand-carousel]').forEach((carousel) => {
 
   scroller.scrollLeft = loopWidth();
   requestAnimationFrame(autoplay);
+});
+
+
+// assets/js/authenticity-strip.js
+document.querySelectorAll('.authenticity-strip').forEach((strip) => {
+  const track = strip.querySelector('.authenticity-strip__track');
+  const content = track?.querySelector('.authenticity-strip__content');
+  if (!content || !content.children.length) return;
+  const seed = [...content.children].map((child) => child.cloneNode(true));
+
+  function fill() {
+    const width = strip.clientWidth;
+    if (!width) return;
+    track.classList.add('is-ready');
+    content.replaceChildren(...seed.map((child) => child.cloneNode(true)));
+    if (!content.getBoundingClientRect().width) return;
+    while (content.getBoundingClientRect().width < width) {
+      content.append(...seed.map((child) => child.cloneNode(true)));
+    }
+    track.replaceChildren(content, content.cloneNode(true));
+  }
+
+  fill();
+  new ResizeObserver(fill).observe(strip);
+  document.fonts?.ready.then(fill);
 });
 
 

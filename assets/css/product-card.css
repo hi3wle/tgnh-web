@@ -36,14 +36,20 @@
 
 @media (hover: hover) and (pointer: fine) {
   .product-quicklook { position: absolute; z-index: 2; top: 50%; left: 50%; display: inline-flex; align-items: center; justify-content: center; padding: 7px 14px; border-radius: 999px; color: #fff; font-size: 10px; font-weight: 700; line-height: 1; white-space: nowrap; text-decoration: none; background: #111; opacity: 0; pointer-events: none; transform: translate(-50%, -42%) scale(.94); transition: opacity 200ms ease, transform 240ms cubic-bezier(.2, .65, .3, 1), background-color 180ms ease; }
-  .product-card:hover .product-media::after, .product-card:focus-within .product-media::after { opacity: 1; }
-  .product-card:hover .product-media img, .product-card:focus-within .product-media img { transform: scale(1.05) rotate(-2deg); }
-  .product-card:hover .product-quicklook, .product-card:focus-within .product-quicklook { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
-  .product-card:hover > p, .product-card:focus-within > p { color: var(--pink); }
+  :is(.product-card, .exclusive-card, .elegance-card):hover .product-media::after, :is(.product-card, .exclusive-card, .elegance-card):focus-within .product-media::after { opacity: 1; }
+  :is(.product-card, .exclusive-card, .elegance-card):hover .product-media img, :is(.product-card, .exclusive-card, .elegance-card):focus-within .product-media img { transform: scale(1.05) rotate(-2deg); }
+  :is(.product-card, .exclusive-card, .elegance-card):hover .product-quicklook, :is(.product-card, .exclusive-card, .elegance-card):focus-within .product-quicklook { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
+  .product-card:hover > p, .product-card:focus-within > p,
+  .exclusive-card:hover .exclusive-card__name, .exclusive-card:focus-within .exclusive-card__name,
+  .elegance-card:hover .elegance-card__name, .elegance-card:focus-within .elegance-card__name { color: var(--pink); }
   .product-quicklook:hover, .product-quicklook:focus-visible { color: #fff; background: #000; outline: 2px solid #fff; outline-offset: 2px; }
 }
 
-@media (prefers-reduced-motion: reduce) { .product-quicklook { transition: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .product-quicklook, .product-media > img, .product-media .product-picture img { transition: none; }
+  :is(.product-card, .exclusive-card, .elegance-card):hover .product-media img,
+  :is(.product-card, .exclusive-card, .elegance-card):focus-within .product-media img { transform: none; }
+}
 
 
 @media (max-width: 991.98px) {

@@ -71,14 +71,20 @@ button { font: inherit; }
 
 @media (hover: hover) and (pointer: fine) {
   .product-quicklook { position: absolute; z-index: 2; top: 50%; left: 50%; display: inline-flex; align-items: center; justify-content: center; padding: 7px 14px; border-radius: 999px; color: #fff; font-size: 10px; font-weight: 700; line-height: 1; white-space: nowrap; text-decoration: none; background: #111; opacity: 0; pointer-events: none; transform: translate(-50%, -42%) scale(.94); transition: opacity 200ms ease, transform 240ms cubic-bezier(.2, .65, .3, 1), background-color 180ms ease; }
-  .product-card:hover .product-media::after, .product-card:focus-within .product-media::after { opacity: 1; }
-  .product-card:hover .product-media img, .product-card:focus-within .product-media img { transform: scale(1.05) rotate(-2deg); }
-  .product-card:hover .product-quicklook, .product-card:focus-within .product-quicklook { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
-  .product-card:hover > p, .product-card:focus-within > p { color: var(--pink); }
+  :is(.product-card, .exclusive-card, .elegance-card):hover .product-media::after, :is(.product-card, .exclusive-card, .elegance-card):focus-within .product-media::after { opacity: 1; }
+  :is(.product-card, .exclusive-card, .elegance-card):hover .product-media img, :is(.product-card, .exclusive-card, .elegance-card):focus-within .product-media img { transform: scale(1.05) rotate(-2deg); }
+  :is(.product-card, .exclusive-card, .elegance-card):hover .product-quicklook, :is(.product-card, .exclusive-card, .elegance-card):focus-within .product-quicklook { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
+  .product-card:hover > p, .product-card:focus-within > p,
+  .exclusive-card:hover .exclusive-card__name, .exclusive-card:focus-within .exclusive-card__name,
+  .elegance-card:hover .elegance-card__name, .elegance-card:focus-within .elegance-card__name { color: var(--pink); }
   .product-quicklook:hover, .product-quicklook:focus-visible { color: #fff; background: #000; outline: 2px solid #fff; outline-offset: 2px; }
 }
 
-@media (prefers-reduced-motion: reduce) { .product-quicklook { transition: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .product-quicklook, .product-media > img, .product-media .product-picture img { transition: none; }
+  :is(.product-card, .exclusive-card, .elegance-card):hover .product-media img,
+  :is(.product-card, .exclusive-card, .elegance-card):focus-within .product-media img { transform: none; }
+}
 
 
 @media (max-width: 991.98px) {
@@ -699,6 +705,7 @@ button { font: inherit; }
 .authenticity-strip { width: 100%; margin: 32px 0 0; overflow: hidden; color: var(--pink); font-size: 14px; font-weight: 700; text-transform: uppercase; background: #fdf8f3; }
 .authenticity-strip__track { display: flex; width: max-content; animation: authenticity-marquee 18s linear; animation-iteration-count: infinite; will-change: transform; }
 .authenticity-strip__content { display: flex; flex: none; align-items: center; margin: 0; padding: 8px 0; white-space: nowrap; }
+.authenticity-strip__track:not(.is-ready) .authenticity-strip__content { min-width: 100vw; justify-content: space-around; }
 .authenticity-strip__content span { padding: 0 16px; border-right: 1px solid #ead5d5; }
 
 @keyframes authenticity-marquee {
@@ -972,12 +979,26 @@ button { font: inherit; }
 }
 
 @media (min-width: 992px) {
-  .hero-carousel .carousel-control-prev, .hero-carousel .carousel-control-next { display: grid; top: 45%; width: max(40px, 3.125%); height: auto; aspect-ratio: 1; }
+  .hero-carousel .carousel-control-prev, .hero-carousel .carousel-control-next { display: grid; top: 45%; width: 40px; height: 40px; padding: 8px; border: 0; border-radius: 50%; place-items: center; background: rgb(255 255 255 / 50%); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); }
+  .hero-carousel .carousel-control-prev::before, .hero-carousel .carousel-control-next::before {
+    position: absolute; inset: 0; padding: 1px; border-radius: inherit; pointer-events: none; content: "";
+    background: linear-gradient(180deg, rgb(0 0 0 / 9%), rgb(0 0 0 / 5%) 50%, rgb(0 0 0 / 9%));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+  }
   .hero-carousel .carousel-control-prev { left: 6.25%; transform: translate(-50%, -50%); }
   .hero-carousel .carousel-control-next { right: 6.25%; transform: translate(50%, -50%); }
-  .hero-carousel .carousel-control-prev img, .hero-carousel .carousel-control-next img { width: 100%; height: 100%; }
+  .hero-carousel .carousel-control-prev img, .hero-carousel .carousel-control-next img { width: 24px; height: 24px; }
   .hero-carousel .carousel-control-prev:focus-visible, .hero-carousel .carousel-control-next:focus-visible { outline: 2px solid var(--pink); outline-offset: 2px; }
 }
 @media (max-width: 991.98px) {
   .hero-carousel { touch-action: pan-y; }
+}
+
+@media (min-width: 992px) and (hover: hover) and (pointer: fine) {
+  .hero-carousel .carousel-control-prev, .hero-carousel .carousel-control-next { transition: box-shadow 160ms ease; }
+  .hero-carousel .carousel-control-prev:hover, .hero-carousel .carousel-control-next:hover { box-shadow: 0 0 0 2px var(--pink); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-carousel .carousel-control-prev, .hero-carousel .carousel-control-next { transition: none; }
 }
