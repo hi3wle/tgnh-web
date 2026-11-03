@@ -8,63 +8,10 @@
   const backdrop = menu.querySelector('[data-menu-backdrop]');
   const navigationShell = menu.closest('.navigation-shell');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const mobileTrigger = document.querySelector('[data-mobile-brands]');
-  const brandPanel = panels.find((panel) => panel.dataset.menuPanel === 'brands');
-  let mobileOpen = false;
-  let inertBackground = [];
   let activeName = null;
   let closeTimer = null;
 
   const panelFor = (name) => panels.find((panel) => panel.dataset.menuPanel === name);
-
-  function positionMobilePanel() {
-    const promoHeight = document.querySelector('.promo-bar').getBoundingClientRect().height;
-    const headerHeight = document.querySelector('.header-navbar').getBoundingClientRect().height;
-    const bottomHeight = document.querySelector('.mobile-navigation').getBoundingClientRect().height;
-    document.body.style.setProperty('--brand-promo-height', `${promoHeight}px`);
-    document.body.style.setProperty('--brand-panel-top', `${promoHeight + headerHeight}px`);
-    document.body.style.setProperty('--brand-panel-bottom', `${bottomHeight}px`);
-  }
-
-  function closeMobileBrands(restoreFocus = true) {
-    if (!mobileOpen) return;
-    mobileOpen = false;
-    document.body.classList.remove('mobile-brands-open');
-    menu.classList.remove('is-open');
-    brandPanel.classList.remove('is-active');
-    brandPanel.hidden = true;
-    mobileTrigger.setAttribute('aria-expanded', 'false');
-    inertBackground.forEach((element) => { element.inert = false; });
-    inertBackground = [];
-    if (restoreFocus) mobileTrigger.focus({ preventScroll: true });
-  }
-
-  mobileTrigger?.addEventListener('click', () => {
-    if (mobileOpen) return closeMobileBrands();
-    closeMenu();
-    window.clearTimeout(closeTimer);
-    positionMobilePanel();
-    mobileOpen = true;
-    document.body.classList.add('mobile-brands-open');
-    inertBackground = [...document.querySelectorAll('main, footer, .mobile-shortcuts, .hero-carousel, .benefit-bar')].filter((element) => !element.inert);
-    inertBackground.forEach((element) => { element.inert = true; });
-    brandPanel.hidden = false;
-    brandPanel.classList.add('is-active');
-    menu.classList.add('is-open');
-    brandPanel.scrollTop = 0;
-    mobileTrigger.setAttribute('aria-expanded', 'true');
-    brandPanel.querySelector('[data-brand-close]').focus({ preventScroll: true });
-  });
-  brandPanel.querySelector('[data-brand-close]').addEventListener('click', () => closeMobileBrands());
-  brandPanel.querySelector('[data-brand-all]').addEventListener('click', () => brandPanel.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'auto' : 'smooth' }));
-  brandPanel.querySelectorAll('[data-brand-letter]').forEach((button) => {
-    button.addEventListener('click', () => {
-      const group = brandPanel.querySelector(`#brand-letter-${button.dataset.brandLetter}`);
-      const top = group.getBoundingClientRect().top - brandPanel.getBoundingClientRect().top + brandPanel.scrollTop - 14;
-      brandPanel.scrollTo({ top, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
-    });
-  });
-  brandPanel.querySelectorAll('.navigation-menu__brand-grid a').forEach((link) => link.addEventListener('click', () => closeMobileBrands(false)));
 
   function closeMenu({ restoreFocus = false } = {}) {
     if (!activeName) return;
@@ -118,12 +65,9 @@
     closeMenu();
   });
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && mobileOpen) closeMobileBrands();
     if (event.key === 'Escape') closeMenu({ restoreFocus: true });
   });
   window.addEventListener('resize', () => {
-    if (mobileOpen && window.innerWidth >= 992) closeMobileBrands(false);
-    else if (mobileOpen) positionMobilePanel();
     if (window.innerWidth < 992) closeMenu();
   });
 })();
@@ -254,42 +198,36 @@ window.TGNH_MOCK_DATA = {
         "image": "assets/images/desktop/7igr3gmj_expires_30_days.png",
         "mobile_image": "assets/images/mobile/vv0ybm55_expires_30_days.png",
         "alt": "Signoria",
-        "badge": "Chỉ còn 5 sp",
-        "eyebrow": "Sale"
+        "badge": "Chỉ còn 5 sp"
       },
       {
         "slug": "paco-rabanne",
         "image": "assets/images/desktop/o9k05qka_expires_30_days.png",
         "mobile_image": "assets/images/mobile/c35m131y_expires_30_days.png",
-        "alt": "Paco Rabanne",
-        "eyebrow": "Sale"
+        "alt": "Paco Rabanne"
       },
       {
         "slug": "moschino-toy-2",
         "image": "assets/images/desktop/q9lypfo0_expires_30_days.png",
         "mobile_image": "assets/images/mobile/mh8sonn3_expires_30_days.png",
         "alt": "Moschino",
-        "badge": "Chỉ còn 1 ngày",
-        "eyebrow": "Sale"
+        "badge": "Chỉ còn 1 ngày"
       },
       {
         "slug": "michael-kors-gorgeous",
         "image": "assets/images/desktop/j1pkks81_expires_30_days.png",
         "mobile_image": "assets/images/mobile/xnnp1fij_expires_30_days.png",
-        "alt": "Michael Kors Gorgeous",
-        "eyebrow": "Sale"
+        "alt": "Michael Kors Gorgeous"
       },
       {
         "slug": "ferragamo-uomo",
         "image": "assets/images/desktop/ferragamo-uomo-signature.png",
-        "alt": "Salvatore Ferragamo Uomo Signature",
-        "eyebrow": "Sale"
+        "alt": "Salvatore Ferragamo Uomo Signature"
       },
       {
         "slug": "miss-saigon-elegance",
         "image": "assets/images/desktop/wfymoxwt_expires_30_days.png",
-        "alt": "BST Miss Saigon Elegance 15ml",
-        "eyebrow": "Sale"
+        "alt": "BST Miss Saigon Elegance 15ml"
       }
     ],
     "favorites": [
@@ -795,7 +733,7 @@ document.querySelectorAll('.product-card, .exclusive-card, .elegance-card').forE
   back.addEventListener('click', showMain);
   dialog.querySelectorAll('[data-sidebar-open]').forEach((button) => button.addEventListener('click', () => {
     const name = button.dataset.sidebarOpen;
-    const source = document.querySelector(name === 'categories' || name === 'brands'
+    const source = document.querySelector(name === 'brands'
       ? '#navigation-menu-brands .navigation-menu__brand-grid'
       : `#navigation-menu-${name} .navigation-menu__links`);
     if (!source) return;
