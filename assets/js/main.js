@@ -934,12 +934,11 @@ document.querySelectorAll('[data-brand-carousel]').forEach((carousel) => {
 
   const leadingCloud = cloud.cloneNode(true);
   leadingCloud.setAttribute('aria-hidden', 'true');
-  leadingCloud.inert = true;
   leadingCloud.querySelectorAll('a').forEach((link) => { link.tabIndex = -1; });
   leadingCloud.querySelectorAll('img').forEach((image) => { image.alt = ''; });
   track.prepend(leadingCloud);
   track.querySelectorAll('.brand-cloud[aria-hidden="true"]').forEach((duplicate) => {
-    duplicate.inert = true;
+    duplicate.inert = false;
     duplicate.querySelectorAll('a').forEach((link) => { link.tabIndex = -1; });
   });
 
@@ -962,6 +961,7 @@ document.querySelectorAll('[data-brand-carousel]').forEach((carousel) => {
   const normalizePosition = () => {
     const width = loopWidth();
     if (!width) return;
+    if (!pointerDown && cloud.contains(document.activeElement)) return;
     const currentScroll = scroller.scrollLeft;
     if (currentScroll > width * 1.5) scroller.scrollLeft = currentScroll - width;
     else if (currentScroll < width * 0.5) scroller.scrollLeft = currentScroll + width;
@@ -1024,7 +1024,12 @@ document.querySelectorAll('[data-brand-carousel]').forEach((carousel) => {
   carousel.addEventListener('pointerleave', (event) => {
     if (event.pointerType === 'mouse') hovered = false;
   });
-  carousel.addEventListener('focusin', () => { focused = true; });
+  carousel.addEventListener('focusin', (event) => {
+    focused = true;
+    if (!pointerDown && cloud.contains(event.target)) {
+      event.target.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    }
+  });
   carousel.addEventListener('focusout', (event) => {
     focused = carousel.contains(event.relatedTarget);
   });
@@ -1036,15 +1041,16 @@ document.querySelectorAll('[data-brand-carousel]').forEach((carousel) => {
     pointerId = event.pointerId;
     startX = event.clientX;
     startScroll = scroller.scrollLeft;
-    scroller.classList.add('is-dragging');
-    if (event.pointerType === 'mouse') scroller.setPointerCapture(pointerId);
   });
 
   scroller.addEventListener('pointermove', (event) => {
     if (!pointerDown || event.pointerId !== pointerId) return;
     const movement = event.clientX - startX;
-    if (Math.abs(movement) >= dragThreshold) suppressClick = true;
+    if (Math.abs(movement) < dragThreshold && !suppressClick) return;
+    suppressClick = true;
+    scroller.classList.add('is-dragging');
     if (event.pointerType === 'mouse') {
+      if (!scroller.hasPointerCapture(pointerId)) scroller.setPointerCapture(pointerId);
       event.preventDefault();
       scroller.scrollLeft = startScroll - movement;
       normalizePosition();
@@ -1060,16 +1066,16 @@ document.querySelectorAll('[data-brand-carousel]').forEach((carousel) => {
     }
   };
 
-  scroller.addEventListener('pointerup', finishDrag);
-  scroller.addEventListener('pointercancel', finishDrag);
+  window.addEventListener('pointerup', finishDrag);
+  window.addEventListener('pointercancel', finishDrag);
   scroller.addEventListener('click', (event) => {
-    if (!suppressClick) return;
+    if (!suppressClick || event.detail === 0) return;
     event.preventDefault();
     event.stopPropagation();
     suppressClick = false;
   }, true);
   scroller.addEventListener('scroll', normalizePosition, { passive: true });
-  scroller.querySelectorAll('img').forEach((image) => { image.draggable = false; });
+  scroller.querySelectorAll('a, img').forEach((element) => { element.draggable = false; });
   previous.addEventListener('click', () => move(-1));
   next.addEventListener('click', () => move(1));
 
